@@ -100,7 +100,7 @@ for algName in range(6):
             arr_.append(result)
         #
         alg_.append(arr_)
-    print(alg_)
+    print(algName)
 writeCSV(0, alg_)
 
 
