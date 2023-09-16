@@ -28,7 +28,7 @@ import optimisation.psoV2 as psoV2
 import os
 
 
-img = cv2.imread("barbaragray.png", 0)
+img = cv2.imread("goldhill.png", 0)
 [hist, _] = np.histogram(img, bins=256, range=(0, 255))
 
 hist = list(hist)
@@ -77,31 +77,37 @@ def writeCSV(imIndex, fit):
 # sa
 
 
-esikVal = 7
-alg_ = []
-for algName in range(6):
-    for i in range(2, 11):
-        arr_ = []
-        for j in range(2):
-            result = 0
-            if (algName == 0):
-                result = genetic.init(hist, kapur.KapurFonk, esik=i)[0]
-            elif (algName == 1):
-                result = gwolf.init(hist, kapur.KapurFonk, esik=i)[0]
-            elif (algName == 2):
-                result = harmoni.init(hist, kapur.KapurFonk, esik=i)[0]
-            elif (algName == 3):
-                result = gwolf4.init(hist, kapur.KapurFonk, esik=i)[0]
-            elif (algName == 4):
-                result = pso.init(hist, kapur.KapurFonk, esik=i)[0]
-            elif (algName == 5):
-                result = anneal.init(hist, kapur.KapurFonk, esik=i)[0]
+print(kapur.KapurFonk([59, 95, 131, 165, 199], hist))
+print(otsu.OtsuFonk([94, 161], hist))
+print(otsu.OtsuFonk([63, 91, 117, 147, 191], hist))
+# print(gwolf.init(hist, kapur.KapurFonk, esik=4))
+# print(gwolf.init(hist, otsu.OtsuFonk, esik=4))
 
-            arr_.append(result)
-        #
-        alg_.append(arr_)
-    print(algName)
-writeCSV(0, alg_)
+# esikVal = 7
+# alg_ = []
+# for algName in range(6):
+#     for i in range(2, 11):
+#         arr_ = []
+#         for j in range(2):
+#             result = 0
+#             if (algName == 0):
+#                 result = genetic.init(hist, kapur.KapurFonk, esik=i)[0]
+#             elif (algName == 1):
+#                 result = gwolf.init(hist, kapur.KapurFonk, esik=i)[0]
+#             elif (algName == 2):
+#                 result = harmoni.init(hist, kapur.KapurFonk, esik=i)[0]
+#             elif (algName == 3):
+#                 result = gwolf4.init(hist, kapur.KapurFonk, esik=i)[0]
+#             elif (algName == 4):
+#                 result = pso.init(hist, kapur.KapurFonk, esik=i)[0]
+#             elif (algName == 5):
+#                 result = anneal.init(hist, kapur.KapurFonk, esik=i)[0]
+
+#             arr_.append(result)
+#         #
+#         alg_.append(arr_)
+#     print(algName)
+# writeCSV(0, alg_)
 
 
 # print(harmoni.init(hist,kapur.KapurFonk,esik=esikVal))

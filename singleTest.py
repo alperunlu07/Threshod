@@ -38,7 +38,7 @@ optAlgList = ["genetic", "gwolf", "harmoni", "hibrit", "pso", "sa"]
 def writeCSV(imIndex, fit, algNameIndex, thresAlgName):
 
     optAlg = optAlgList[algNameIndex]
-    path = "Results/" + thresAlgName
+    path = "Results4/" + thresAlgName
     if not os.path.exists(path):
         os.makedirs(path)
     with open(path + "/" + imgName[imIndex] + "-" + optAlg + "-fitnessVal.csv", "w", newline='') as file:
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         hist[ix] = hist[ix] / total_pix
 
     alg_ = []
-    for algName in range(2, 4):
+    for algName in range(4, 5):
         for i in range(2, 11):
             arr_ = []
             for j in range(50):
@@ -87,6 +87,7 @@ if __name__ == "__main__":
 
                 arr_.append(result)
             #
+            print(i)
             alg_.append(arr_)
         print(optAlgList[algName])
         writeCSV(imIndex, alg_, algName, thresAlgName)

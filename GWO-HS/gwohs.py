@@ -2,14 +2,19 @@ import math
 import numpy as np
 from numpy import matlib as mb
 import random
+import cv2
+
+import matplotlib.pyplot as plt
+import codecs
+import json
 
 
-def init(hist, fitnessFonk, params=[10, 10, 2], esik=3):
+def init(hist, fitnessFonk, params=[100, 100, 2], esik=3, name=""):
 
     GN = params[0]
     PN = params[1]
     a = params[2]
-
+    bestVals = []
     hist = hist
     Inf = math.inf
     Dim = esik
@@ -70,6 +75,7 @@ def init(hist, fitnessFonk, params=[10, 10, 2], esik=3):
     dIndex = minFitnessIndex
     Fitness[minFitnessIndex] = -1
 
+    bestVals.append(alphaFitness)
     for i in range(10):
         # Alpha
         for k in range(Dim):
@@ -109,41 +115,6 @@ def init(hist, fitnessFonk, params=[10, 10, 2], esik=3):
             deltaPosition = Pi
             Positions[dIndex, :] = Pi
             Fitness[dIndex] = fxi1
-
-    # for i in range(10):
-    #     #Alpha
-    #     for k in range(Dim):
-    #         Pi[k] = round(alphaPosition[k] + stepSize * random.randint(0,10) - 5) #xc[k] + random.random() #- 0.5
-    #         Pi[k] = max(min(Pi[k],Xmax[k]),Xmin[k])
-
-    #     fxi1 = fitnessFonk(Pi,hist)
-    #     if(alphaFitness < fxi1):
-    #         alphaFitness = fxi1
-    #         alphaPosition = Pi
-    #         Positions[aIndex,:] = Pi
-    #         Fitness[aIndex] = fxi1
-    #     #Beta
-    #     for k in range(Dim):
-    #         Pi[k] = round(betaPosition[k] + stepSize * random.randint(0,10) - 5) #xc[k] + random.random() #- 0.5
-    #         Pi[k] = max(min(Pi[k],Xmax[k]),Xmin[k])
-
-    #     fxi1 = fitnessFonk(Pi,hist)
-    #     if(betaFitness < fxi1):
-    #         betaFitness = fxi1
-    #         betaPosition = Pi
-    #         Positions[bIndex,:] = Pi
-    #         Fitness[bIndex] = fxi1
-    #     #Delta
-    #     for k in range(Dim):
-    #         Pi[k] = round(deltaPosition[k] + stepSize * random.randint(0,10) - 5) #xc[k] + random.random() #- 0.5
-    #         Pi[k] = max(min(Pi[k],Xmax[k]),Xmin[k])
-
-    #     fxi1 = fitnessFonk(Pi,hist)
-    #     if(deltaFitness < fxi1):
-    #         deltaFitness = fxi1
-    #         deltaPosition = Pi
-    #         Positions[dIndex,:] = Pi
-    #         Fitness[dIndex] = fxi1
 
     t = 0
     while t < GN:
@@ -258,11 +229,38 @@ def init(hist, fitnessFonk, params=[10, 10, 2], esik=3):
                 Fitness[dIndex] = fxi1
 
         stepSize = frac * stepSize
+
         bestPositions[t, :] = alphaPosition
         bestFitness[t] = alphaFitness
+        if (bestVals[len(bestVals) - 1] < alphaFitness):
+            bestVals.append(alphaFitness)
         t = t + 1
 
-    bestFitnessIndex = np.argmax(bestFitness)
-    return [bestFitness[bestFitnessIndex], bestPositions[bestFitnessIndex, :]]
-    # print(bestPositions[bestFitnessIndex,:])
-    # print(bestFitness[bestFitnessIndex])
+    # bestFitnessIndex = np.argmax(bestFitness)
+    # print(bestVals)
+    bestFitness_ = bestFitness.tolist()
+    bestPositions_ = bestPositions.tolist()
+    return [bestVals, bestFitness_, bestPositions_]
+    # plt.plot(bestVals)
+    # plt.title(name)
+    # # plt.show()
+    # plt.savefig(name)
+    # plt.close()
+
+
+# imgName = ["barbara", "couple", "boat", "goldhill", "lake", "aerial"]
+# imIndex = 0
+# img = cv2.imread(imgName[imIndex] + ".png", 0)
+# [hist, _] = np.histogram(img, bins=256, range=(0, 255))
+
+# hist = list(hist)
+# total_pix = img.size
+# for ix in range(len(hist)):
+#     hist[ix] = hist[ix] / total_pix
+
+# # thresAlgorithm = otsu.OtsuFonk
+# thresAlgorithm = kapur.KapurFonk
+# for i in range(2, 11):
+#     init(hist, thresAlgorithm, esik=i, name="kapur" + "_" +
+#          imgName[imIndex] + "_" + str(i))
+#     print(i)

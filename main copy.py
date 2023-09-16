@@ -67,7 +67,7 @@ if __name__ == "__main__":
         hist[ix] = hist[ix] / total_pix
 
     alg_ = []
-    for algName in range(2, 4):
+    for algName in range(6):
         for i in range(2, 11):
             arr_ = []
             for j in range(50):
